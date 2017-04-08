@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/ViveGameJam.unity
+- path: Assets/Assets/Scenes/ViveGameJam.unity
   isLoaded: 1
   isActive: 1

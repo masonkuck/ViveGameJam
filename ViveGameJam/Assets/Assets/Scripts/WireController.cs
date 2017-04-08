@@ -27,6 +27,8 @@ public class WireController : MonoBehaviour
         {
             if (touchedControls.Count > 0)
                 CheckIsElectrified();
+            else
+                IsElectrified = false;
         }
 
         Renderer rend = GetComponent<Renderer>();
@@ -42,7 +44,10 @@ public class WireController : MonoBehaviour
 
     public bool CheckIsElectrified()
     {
-        if (IsSource || touchedControls.FirstOrDefault(x => x.CheckIsElectrified(this)) != null)
+        List<WireController> list = new List<WireController>();
+        list.Add(this);
+
+        if (IsSource || touchedControls.FirstOrDefault(x => x.CheckIsElectrified(list)) != null)
         {
             return IsElectrified = true;
         }
@@ -50,10 +55,12 @@ public class WireController : MonoBehaviour
         {
             return IsElectrified = false;
         }
+
     }
-    public bool CheckIsElectrified(WireController controller)
+    public bool CheckIsElectrified(List<WireController> list)
     {
-        if (IsSource || touchedControls.FirstOrDefault(x => x != controller && x.CheckIsElectrified(this)) != null)
+        list.Add(this);
+        if (IsSource || touchedControls.FirstOrDefault(x => !list.Contains(x) && x.CheckIsElectrified(list)) != null)
         {
             return IsElectrified = true;
         }
@@ -83,7 +90,6 @@ public class WireController : MonoBehaviour
         if (comp != null && touchedControls.Contains(comp))
         {
             touchedControls.Remove(comp);
-            CheckIsElectrified();
         }
     }
 }
